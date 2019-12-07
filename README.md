@@ -6,7 +6,6 @@ A "extinção" refere-se a tal município juntar-se a outro que existe e que ten
 
 A pergunta que fica, ainda mais para quem vive na cidade grande, é: quais municípios serão esses que a proposta está mirando, caso os parâmetros de hoje fossem usados?
 
-A resposta que apareceé surpreendente ao olhar o mapa em anexo. 
+A resposta é surpreendente ao olhar o mapa em anexo. 
 
-
-Este simples exercício com dados destrói alguns preconceitos que surgiriam na cabeça de muita gente (inclusive a minha), pois muitos diriam que é na região Norte e Nordeste que há muitas dessas cidades. Só que não!
+Acrescenta-se que este simples exercício com dados destrói alguns preconceitos que surgiriam na cabeça de muita gente (inclusive a minha), pois muitos diriam que é na região Norte e Nordeste que há muitas dessas cidades. Só que não!
