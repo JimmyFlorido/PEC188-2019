@@ -118,4 +118,5 @@ cities2 %>%
 ---
 Cidades: "1,168"
 Eleitores: "3,938,144"
+
 ---
