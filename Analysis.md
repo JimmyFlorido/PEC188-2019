@@ -90,44 +90,17 @@ write.csv(cities2, file = "Cities2.csv", row.names = FALSE)
 
 Plotar as informações no mapa
 
-```{r PLOT1}
-
-cities3 <- read.csv("Cities2.csv")
-
-cities3 %>% 
-  filter(População < 5000) %>% 
-  leaflet() %>% 
-  addTiles() %>% 
-  addMarkers(~lon, ~lat,
-             clusterOptions = markerClusterOptions())
-
-
-```
-
-Buscar uma plotagem mais bonita
-
-```{r PLOT2}
+```{r PLOT}
 
 cities3 %>%
-  filter(População < 5000) %>%
+  filter(População < 5000 &
+           Share < 0.1) %>% 
   leaflet() %>%
   addProviderTiles(providers$Stamen.Toner) %>%
   addCircleMarkers(~lon, ~lat,
                    color = "red",
                    fillOpacity =  0.3,
                    radius = 0.2)
-
-# cities3 %>% 
-#   filter(População < 5000) %>% 
-#   leaflet() %>% 
-#   addProviderTiles(providers$MtbMap) %>%
-#   addProviderTiles(providers$Stamen.TonerLines,
-#                    options = providerTileOptions(opacity = 0.35)) %>%
-#   addProviderTiles(providers$Stamen.TonerLabels) %>% 
-#   addCircleMarkers(~lon, ~lat, 
-#                    color = "red", 
-#                    fillOpacity =  0.3,
-#                    radius = 0.2)
 
 
 ```
