@@ -15,21 +15,24 @@ library(leaflet)
 
 ```
 
-Ativar o serviço do Google no GGMAP
+Ativar o serviço do Google no GGMAP. 
 
-```{r ACTIVATE GOOGLE SERVICE, eval=FALSE, include=FALSE}
+Para isso, não basta só o "ggmap", é necessário ter acesso a algum API de geolocalização. 
+Um API muito popular e usado aqui foi o "Geocoding API" do Google (https://developers.google.com/maps/documentation/geocoding/intro). 
+Basta criar uma conta no Google Cloud Platform para ter acesso à chave que pode ser usada para captar rapidamente informações de geolocalização.
+Observações: você vai ter que colocar alguma forma de pagamento para ter acesso ao serviço, e ele não cobrará nada de você caso envolva no máximo 40.000 pesquisas por mês, mas.... se você ultrapassou isso: cada pesquisa irá custar US$ 0.05. Tenha cuidado!
+
+```{r ACTIVATE GOOGLE SERVICE}
 
 #Coloque a chave do seu API
-
-
 register_google(key = "YOUR_API_KEY")
 
-#check if the key is saved
+#Verifique se a chave funciona
 ggmap::has_google_key()
 
 ```
 
-Baixar a base de dados fiscais e consertar ela
+Baixar a base de dados fiscais e ajustar ela para o exercício
 
 ```{r DATASET2}
 
