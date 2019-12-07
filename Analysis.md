@@ -116,6 +116,6 @@ cities2 %>%
 
 ```
 ---
-Cidades: 1168
-author: 3938144
+Cidades: "1,168"
+Eleitores: "3,938,144"
 ---
