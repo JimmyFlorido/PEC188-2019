@@ -101,6 +101,8 @@ cities2 %>%
                    radius = 0.2)
 
 ```
+![alt text](https://github.com/JimmyFlorido/PEC188-2019/blob/master/Final.png "Cidades Impactadas")
+
 
 Além de construir o mapa, é importante se perguntar: caso essas cidades sejam extinguidas, ou seja, se a proposta passar, quantas cidades e eleitores em potencial serão afetadas pela medida? 
 
@@ -113,3 +115,7 @@ cities2 %>%
             Eleitores = sum(População))
 
 ```
+---
+Cidades: 1168
+author: 3938144
+---
