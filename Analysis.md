@@ -25,7 +25,7 @@ Observações: você vai ter que colocar alguma forma de pagamento para ter aces
 ```{r ACTIVATE GOOGLE SERVICE}
 
 #Coloque a chave do seu API
-register_google(key = "AIzaSyDraLrdm7nUtAOXC7xqA2aL-vqi4QzsY0o")
+register_google(key = "SUA_CHAVE_DE_API_AQUI")
 
 #Verifique se a chave está ativa
 ggmap::has_google_key()
