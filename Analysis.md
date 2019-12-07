@@ -51,7 +51,7 @@ cities <- fiscal %>%
   mutate(Instituição = as.character(Instituição),
          UF = str_to_lower(as.character(UF)),
          Cidade = str_remove(Instituição, "Prefeitura Municipal de "),
-         Cidade = paste(str_to_lower(Cidade), UF, sep = " - ") %>%
+         Cidade = paste(str_to_lower(Cidade), UF, sep = " - "),
          address = paste(str_to_lower(Cidade), "brazil", sep = ", ")) %>% 
   filter(Coluna == "Receitas Brutas Realizadas",
          Conta %in% c("1.1.1.0.00.0.0 - Impostos", "Total Receitas")) %>% 
