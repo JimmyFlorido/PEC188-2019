@@ -25,74 +25,64 @@ Observações: você vai ter que colocar alguma forma de pagamento para ter aces
 ```{r ACTIVATE GOOGLE SERVICE}
 
 #Coloque a chave do seu API
-register_google(key = "YOUR_API_KEY")
+register_google(key = "SUA_CHAVE_DE_API_AQUI")
 
-#Verifique se a chave funciona
+#Verifique se a chave está ativa
 ggmap::has_google_key()
 
 ```
 
-Baixar a base de dados fiscais e ajustar ela para o exercício
+Carregar a base de dados fiscais e ajustar ela para o exercício. 
 
-```{r DATASET2}
+Isto inclui deixar os dados na categoria correta, mas também envolve em deixar uma referência para conseguir as coordenadas (latitude e longitude) quando usar o API de geolocalização. Sem essas coordenadas, não é possível desenhar um mapa com os pontos de interesse para a análise. 
 
-fiscal <- read.csv2("finbra.csv", 
-                    encoding = "utf-8", 
-                    header = TRUE, 
-                    skip = 3)
+Por isso, é importante criar uma variável com um formato adequado para o API captar bem a informação, caso contrário, é pesquisada uma coordenada qualquer que não corresponde à verdadeira. Normalmente, uma referência que funciona bem é nesse formato (vamos pegar o exemplo de São Paulo Capital): "são paulo - sp, brazil"
 
-fiscal2 <- fiscal %>% 
-  filter(Coluna == "Receitas Brutas Realizadas",
-         Conta %in% c("1.7.0.0.00.0.0 - Transferências Correntes", "Total Receitas")) %>% 
-  spread(Conta, Valor) %>% 
-  mutate(Share = `1.7.0.0.00.0.0 - Transferências Correntes`/`Total Receitas`)
-
-```
-
-Baixar a base de dados da população e consertar ela
+Observa-se que esse formato vai escolher aleatoriamente qualquer lugar da cidade. 
 
 ```{r DATASET}
 
-cities <- read.csv2("Cities.csv", encoding = "utf-8")
+fiscal <- read.csv2("finbra.csv", 
+                    encoding = "latin1", #normalmente, usa-se "utf-8", mas algumas vezes só dá pra ler com esse encoding
+                    header = TRUE, 
+                    skip = 3)
 
-cities <- cities %>% 
-  mutate(Município = as.character(Município))
-
-cities2 <- stringr::str_split_fixed(cities$Município, "\\(", 2) %>% 
-  as.data.frame()
-
-cities2 <- cities2 %>% 
-  rename("Município" = V1,
-         "UF" = V2) %>% 
-  mutate(Município = trimws(Município, which = "right"),
-         UF = as.character(UF),
-         UF = str_remove(UF, "\\)"))
-
-cities2 <- cities2 %>% 
-  add_column(População = cities$População_residente_estimada_.Pessoas._2019) %>% 
-  mutate(lugar = paste(Município, UF, sep = " - "),
-         lugar = str_to_lower(paste(lugar, ", brazil")))
+cities <- fiscal %>% 
+  mutate(Instituição = as.character(Instituição),
+         UF = str_to_lower(as.character(UF)),
+         Cidade = str_remove(Instituição, "Prefeitura Municipal de "),
+         Cidade = paste(str_to_lower(Cidade), UF, sep = " - ") %>%
+         address = paste(str_to_lower(Cidade), "brazil", sep = ", ")) %>% 
+  filter(Coluna == "Receitas Brutas Realizadas",
+         Conta %in% c("1.1.1.0.00.0.0 - Impostos", "Total Receitas")) %>% 
+  spread(Conta, Valor) %>% 
+  rename("Taxes" = `1.1.1.0.00.0.0 - Impostos`, 
+         "Revenue" = `Total Receitas`) %>% 
+  mutate(Taxes = replace_na(Taxes, 0), 
+         Share = Taxes/Revenue) #Essa informação mostra a proporção de quanto que o município não recebe de recursos externos
 
 ```
 
-Conseguir as coordenadas
+Com a base de dados ajustada, consiga as coordenadas. 
 
-```{r GEOCODING, eval=FALSE, include=FALSE}
+```{r GEOCODING}
 
-cities2 <- cities2 %>% 
-  mutate_geocode(lugar, 
+cities <- cities %>% 
+  mutate_geocode(address, 
                  output = "latlona", 
                  source = "google")
 
-write.csv(cities2, file = "Cities2.csv", row.names = FALSE)
+write.csv(cities, file = "finbra2.csv", row.names = FALSE) #quando essas pesquisas são feitas, normalmente é sábio salvar elas num arquivo separado para evitar fazer tal pesquisa de novo (o limite de 40.000 lembra?!)
 
 ```
 
-Plotar as informações no mapa
+Plotar as informações no mapa do Brasil com o auxílio das coordenadas adquiridas. Dessa forma, pode-se visualizar quais cidades potencialmente serão impactadas pela medida caso ocorra sua aprovação. 
 
 ```{r PLOT}
 
-cities3 %>%
+cities2 <- read.csv("finbra2.csv")
+
+cities2 %>%
   filter(População < 5000 &
            Share < 0.1) %>% 
   leaflet() %>%
@@ -102,5 +92,16 @@ cities3 %>%
                    fillOpacity =  0.3,
                    radius = 0.2)
 
+```
+
+Além de construir o mapa, é importante se perguntar: caso essas cidades sejam extinguidas, ou seja, se a proposta passar, quantas cidades e eleitores em potencial serão afetadas pela medida? 
+
+```{r THENUMBER}
+
+cities2 %>%
+  filter(População < 5000,
+         Share < 0.1) %>%
+  summarise(Cidades = n(),
+            Eleitores = sum(População))
 
 ```
