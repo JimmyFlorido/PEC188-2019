@@ -115,8 +115,8 @@ cities2 %>%
             Eleitores = sum(População))
 
 ```
----
-Cidades: "1,168"
-Eleitores: "3,938,144"
 
----
+| Cidades       | Eleitores     |
+| ------------- |:-------------:|
+| 1,168         | 3,938,144     |
+
