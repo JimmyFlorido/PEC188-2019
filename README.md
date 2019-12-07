@@ -8,6 +8,8 @@ No entanto, a pergunta que fica, ainda mais para quem vive na cidade grande, é:
 
 A resposta é surpreendente ao olhar o mapa em anexo. 
 
+![alt text](https://github.com/JimmyFlorido/PEC188-2019/blob/master/Final.png "Cidades Impactadas")
+
 Acrescenta-se que este simples exercício com dados destrói alguns preconceitos que surgiriam na cabeça de muita gente (inclusive a minha), pois muitos diriam que é na região Norte e Nordeste que há muitas dessas cidades. Só que não!
 
 Além disso, o exercício revela a quantidade de cidades que serão afetadas pela medida. Pode haver discrepâncias em relação ao número divulgado na imprensa, mas isso deve-se à base de dados usada, que se refere ao exercício de 2018 (o pessoal do Governo Federal deve ter algo mais atualizado)
