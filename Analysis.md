@@ -15,7 +15,7 @@ library(leaflet)
 
 ```
 
-Ativar o serviço do Google no GGMAP. 
+Ativar o serviço do Google no "ggmap". 
 
 Para isso, não basta só o "ggmap", é necessário ter acesso a algum API de geolocalização. 
 Um API muito popular e usado aqui foi o "Geocoding API" do Google (https://developers.google.com/maps/documentation/geocoding/intro). 
@@ -25,14 +25,27 @@ Observações: você vai ter que colocar alguma forma de pagamento para ter aces
 ```{r ACTIVATE GOOGLE SERVICE}
 
 #Coloque a chave do seu API
-register_google(key = "SUA_CHAVE_DE_API_AQUI")
+register_google(key = "AIzaSyDraLrdm7nUtAOXC7xqA2aL-vqi4QzsY0o")
 
 #Verifique se a chave está ativa
 ggmap::has_google_key()
 
 ```
 
-Carregar a base de dados fiscais e ajustar ela para o exercício. 
+Carregar a base de dados. 
+
+Os dados podem ser encontrados no SISCONFI (https://siconfi.tesouro.gov.br/): siga a aba "Consultas" > "Consultar Finbra" > "Contas Anuais". Uma vez lá, marque respectivamente o "Exercício" e "Escopo" como: "2018" e "Municípios". A tabela que precisa ser escolhida é "Receitas Orçamentárias (Anexo I-C)". Pronto! Você acesso a um arquivo .csv compactado que possui as informações detalhadas de receita de todos os municípios do Brasil
+
+```{r DATASET}
+
+fiscal <- read.csv2("finbra_MUN_ReceitasOrcamentarias(AnexoI-C)/finbra.csv", 
+                    encoding = "latin1", #normalmente, usa-se "utf-8", mas algumas vezes só dá pra ler com esse encoding
+                    header = TRUE, 
+                    skip = 3)
+
+```
+
+Ajustar a base de dados fiscais para o exercício. 
 
 Isto inclui deixar os dados na categoria correta, mas também envolve em deixar uma referência para conseguir as coordenadas (latitude e longitude) quando usar o API de geolocalização. Sem essas coordenadas, não é possível desenhar um mapa com os pontos de interesse para a análise. 
 
@@ -40,18 +53,12 @@ Por isso, é importante criar uma variável com um formato adequado para o API c
 
 Observa-se que esse formato vai escolher aleatoriamente qualquer lugar da cidade. 
 
-```{r DATASET}
-
-fiscal <- read.csv2("finbra.csv", 
-                    encoding = "latin1", #normalmente, usa-se "utf-8", mas algumas vezes só dá pra ler com esse encoding
-                    header = TRUE, 
-                    skip = 3)
+```{r FIX DATASET}
 
 cities <- fiscal %>% 
   mutate(Instituição = as.character(Instituição),
          UF = str_to_lower(as.character(UF)),
          Cidade = str_remove(Instituição, "Prefeitura Municipal de "),
-         Cidade = paste(str_to_lower(Cidade), UF, sep = " - "),
          address = paste(str_to_lower(Cidade), "brazil", sep = ", ")) %>% 
   filter(Coluna == "Receitas Brutas Realizadas",
          Conta %in% c("1.1.1.0.00.0.0 - Impostos", "Total Receitas")) %>% 
@@ -72,7 +79,8 @@ cities <- cities %>%
                  output = "latlona", 
                  source = "google")
 
-write.csv(cities, file = "finbra2.csv", row.names = FALSE) #quando essas pesquisas são feitas, normalmente é sábio salvar elas num arquivo separado para evitar fazer tal pesquisa de novo (o limite de 40.000 lembra?!)
+#quando essas pesquisas são feitas, normalmente é sábio salvar elas num arquivo separado para evitar fazer tal pesquisa de novo (o limite de 40.000 lembra?!)
+write.csv(cities, file = "finbra2.csv", row.names = FALSE)
 
 ```
 
