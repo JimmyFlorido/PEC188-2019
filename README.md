@@ -12,6 +12,6 @@ A resposta é surpreendente ao olhar o mapa abaixo:
 
 Acrescenta-se que este simples exercício com dados destrói alguns preconceitos que surgiriam na cabeça de muita gente (inclusive a minha), pois muitos diriam que é na região Norte e Nordeste que há muitas dessas cidades. Só que não!
 
-Além disso, o exercício revela a quantidade de cidades que serão afetadas pela medida. Pode haver discrepâncias em relação ao número divulgado na imprensa, mas isso deve-se à base de dados usada, que se refere ao exercício de 2018 (o pessoal do Governo Federal deve ter algo mais atualizado).
+Além disso, o exercício (feito em R) revela a quantidade de cidades que serão afetadas pela medida. Pode haver discrepâncias em relação ao número divulgado na imprensa, mas isso deve-se à base de dados usada, que se refere ao exercício de 2018 (o pessoal do Governo Federal deve ter algo mais atualizado).
 
 Como comentário final, cabe sublinhar que há uma correlação importante entre as cidades com menos de 5.000 habitantes em relação às cidades com menos de 10% de participação da arrecadação de impostos na receita total. Esta redundância nos critérios estipulados pela proposta, sugere que haja mais reflexão antes de submetê-la à sociedade. 
